@@ -96,6 +96,12 @@ export function buildApp(): express.Application {
     app.post("/charge", async (req, res) => {
         try {
             const account = req.body.account ?? "account";
+            const charges = req.body.charges ?? 10;
+            if (charges < 0) {
+                console.log(`Invalid charge request for account ${account}: chages: ${charges}`);
+                res.status(400).json('Invalid charges');   
+                return; 
+            }
             const result = await charge(account, req.body.charges ?? 10);
             console.log(`Successfully charged account ${account}: remainingBalance: ${result.remainingBalance}, isAuthorized: ${result.isAuthorized}`);
             res.status(200).json(result);
