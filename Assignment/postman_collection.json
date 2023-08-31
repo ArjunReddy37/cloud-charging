@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "bbab4a02-0b2b-4159-98c9-c29f2fa18534",
+		"name": "Cloud Charge Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reset",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"account\": \"test\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server}}:3000/reset",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "3000",
+					"path": [
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset balance check",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"isAuthorized should be true\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.isAuthorized).to.eql(true);",
+							"});",
+							"pm.test(\"remainingBalance should be 100\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.remainingBalance).to.eql(100);",
+							"});",
+							"pm.test(\"charges shouldbe 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.charges).to.eql(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": \"test\",\n    \"charges\": 0 \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server}}:3000/charge",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "3000",
+					"path": [
+						"charge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Recharge for 50 Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"isAuthorized should be true\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.isAuthorized).to.eql(true);",
+							"});",
+							"pm.test(\"remainingBalance should be 50\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.remainingBalance).to.eql(50);",
+							"});",
+							"pm.test(\"charges shouldbe 50\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.charges).to.eql(50);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": \"test\",\n    \"charges\": 50 \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server}}:3000/charge",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "3000",
+					"path": [
+						"charge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invalid Recharge for 100 Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"isAuthorized should be false\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.isAuthorized).to.eql(false);",
+							"});",
+							"pm.test(\"remainingBalance should not changre and be 50\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.remainingBalance).to.eql(50);",
+							"});",
+							"pm.test(\"charges shouldbe 0\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.charges).to.eql(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": \"test\",\n    \"charges\": 100 \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{server}}:3000/charge",
+					"protocol": "http",
+					"host": [
+						"{{server}}"
+					],
+					"port": "3000",
+					"path": [
+						"charge"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "10.89.0.15",
+			"type": "default"
+		}
+	]
+}
