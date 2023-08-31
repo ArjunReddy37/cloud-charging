@@ -1,3 +1,7 @@
+# Assignment
+
+Test results are uploaded to [folder Assignment](./Assignment)
+
 # Cloud Charging Assessment
 
 This is a small TypeScript project that allows you to locally run the Cloud Charging engine. Do not worry if you are not familiar with TypeScript, the codebase is small and easy to follow. The bulk of the logic is in `backend/app.ts`.
