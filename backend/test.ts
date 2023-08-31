@@ -16,6 +16,16 @@ async function resetTest() {
     });
 }
 
+async function badChargeRequestTest() {
+    await app.post("/reset").send({
+        account: "badChargeRequesAccount",
+    }).expect(204);
+    await app.post("/charge").send({
+        account: "badChargeRequesAccount",
+        charges: -10
+    }).expect(400);
+}
+
 async function chargeTest() {
     await app.post("/reset").send({
         account: "test",
@@ -66,6 +76,7 @@ async function basicLatencyTest() {
 async function runTests() {
     await resetTest();
     await chargeTest();
+    await badChargeRequestTest();
     await basicLatencyTest();
 }
 
